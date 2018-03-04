@@ -1,36 +1,54 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { login, logout, isLoggedIn } from '../utils/AuthService';
-import '../App.css';
+import React from 'react';
+import {
+  Navbar,
+  NavbarBrand,
+  Nav,
+  NavItem,Button
+   } from 'reactstrap';
+  import { Link } from 'react-router';
+  import { login, logout, isLoggedIn, getName } from '../utils/AuthService';
+  import '../App.css';
 
-class Nav extends Component {
 
+export default class Example extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
   render() {
+    const name = getName();
     return (
-      <nav className="navbar navbar-default">
-        <div className="navbar-header">
-          <Link className="navbar-brand" to="/">Chuck Norris World</Link>
-        </div>
-        <ul className="nav navbar-nav">
-          <li>
-            <Link to="/">Food Jokes</Link>
-          </li>
-          <li>
-            { 
-             ( isLoggedIn() ) ? <Link to="/special">Celebrity Jokes</Link> :  ''
-            }
-          </li>
-        </ul>
-        <ul className="nav navbar-nav navbar-right">
-          <li>
-           { 
-             (isLoggedIn()) ? ( <button className="btn btn-danger log" onClick={() => logout()}>Log out </button> ) : ( <button className="btn btn-info log" onClick={() => login()}>Log In</button> )
-           }
-          </li>
-        </ul>
-      </nav>
+      <div>
+        <Navbar color="info" light expand="md" >
+          <NavbarBrand className="" href="/">Start</NavbarBrand>
+            <Nav className="ml-auto" navbar>
+            <NavItem>
+              <Link className="h3" href="/components/">About</Link>
+            </NavItem>
+              <NavItem>
+
+
+
+                   {
+                     (isLoggedIn()) ?
+                     ( <div><Link>{name}</Link><Button className="h3 btn btn-primary" onClick={() => logout()}>Log out </Button></div> ) :
+                     ( <Button onClick={() => login()}>Log In</Button> )
+                   }
+
+              </NavItem>
+
+            </Nav>
+        </Navbar>
+      </div>
     );
   }
 }
-
-export default Nav;

@@ -4,11 +4,12 @@ import auth0 from 'auth0-js';
 const ID_TOKEN_KEY = 'id_token';
 const ACCESS_TOKEN_KEY = 'access_token';
 
-const CLIENT_ID = '{AUTH0_CLIENT_ID}';
-const CLIENT_DOMAIN = '{AUTH0_DOMAIN}';
-const REDIRECT = 'YOUR_CALLBACK_URL';
-const SCOPE = '{SCOPE}';
-const AUDIENCE = 'AUDIENCE_ATTRIBUTE';
+const CLIENT_ID = 'CIly9x2KLRBp53fNZLtMxB1nGz5tttrb';
+const CLIENT_DOMAIN = 'farmr.eu.auth0.com';
+const REDIRECT = 'http://localhost:3000/callback';
+//const SCOPE = '{SCOPE}';
+const SCOPE = 'openid email profile';
+const AUDIENCE = 'https://farmr.eu.auth0.com/api/v2/';
 
 var auth = new auth0.WebAuth({
   clientID: CLIENT_ID,
@@ -27,6 +28,7 @@ export function login() {
 export function logout() {
   clearIdToken();
   clearAccessToken();
+  clearProfile();
   browserHistory.push('/');
 }
 
@@ -88,4 +90,22 @@ function getTokenExpirationDate(encodedToken) {
 function isTokenExpired(token) {
   const expirationDate = getTokenExpirationDate(token);
   return expirationDate < new Date();
+}
+
+export function getEmail() {
+  return getProfile().email;
+}
+
+export function getName() {
+  return getProfile().nickname;
+}
+
+export function getProfile() {
+  const token = decode(getIdToken());
+  return token;
+}
+
+function clearProfile() {
+  localStorage.removeItem('profile');
+  localStorage.removeItem('userId');
 }

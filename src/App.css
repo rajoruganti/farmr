@@ -2,3 +2,7 @@
 .log {
   margin: 5px 10px 0 0;
 }
+.navbar-nav > li{
+  padding-left:20px;
+  padding-right:10px;
+}
